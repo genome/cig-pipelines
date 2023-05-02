@@ -1,0 +1,35 @@
+#!/bin/bash
+set -ex
+picard_jar=/usr/picard/picard.jar
+if [ ! -e "${picard_jar}" ]; then
+    echo "Failed to find picard jar at ${picard_jar}" && exit 1
+fi
+
+USAGE="${0} <ALIGNMENTS> <ANNOTATION> <OUTPUT>"
+# ALIGNMENTS  sam/bam file
+# ANNOTATION  gtf gz
+# OUTPUT      intervals file
+if [ -z "${1}" ]; then
+    echo $USAGE && exit 2
+fi
+alignments="${1}"
+if [ -z "${1}" ]; then
+    echo $USAGE && exit 2
+fi
+annotation="${2}"
+if [ -z "${3}" ]; then
+    echo $USAGE && exit 2
+fi
+output="${3}"
+
+java -jar "${picard_jar}" ViewSam --INPUT "${alignments}" --ALIGNMENT_STATUS All --PF_STATUS All --HEADER_ONLY 2>/dev/null | grep SQ > "${output}"
+zcat "${annotation}" | \
+    grep 'gene_type "rRNA"' | \
+    awk '$3 == "transcript"' | \
+    cut -f1,4,5,7,9 | \
+    perl -lane '
+        /transcript_id "([^"]+)"/ or die "no transcript_id on $.";
+        print join "\t", (@F[0,1,2,3], $1)
+    ' | \
+    sort -k1V -k2n -k3n \
+>> "${output}"
