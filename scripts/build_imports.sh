@@ -23,7 +23,7 @@ echo  "${wdl_dn}"
 
 working_dn=$(mktemp -d 2>/dev/null || mktemp -d -t 'build-imports-XXX')
 echo WDL: "${wdl}"
-for import_fn in $(grep import "${wdl}" | awk '{print $2}' | sed 's/"//'g); do
+for import_fn in $(grep import "${wdl}" | awk -F\" '{print $2}' | sed 's#\(..\/\)\+#wdl/#'); do
     dest_bn=$(dirname ${import_fn})
     dest_dn="${working_dn}/${dest_bn}"
     mkdir -p "${dest_dn}"
