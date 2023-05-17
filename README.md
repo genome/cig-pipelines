@@ -10,8 +10,8 @@ The [Wang Lab](https://wang.wustl.edu/) at [Washington University School of Medi
 | Path | Description |
 | --- | --- |
 | wdl | parent directory containing all CWL tool and workflow definitions |
-| wdl/pipelines | start to end process that typically contain workflows and tools and produce final outputs |
-| wdl/tasks     | these wrap command line interfaces or scripts connecting multiple tools |
-| wdl/tools | workflows that combine multiple tools to produce intermediate outputs |
+| wdl/pipelines | start to end process that typically contain workflows, tools, & tasks to produce final outputs |
+| wdl/tasks     | these wrap command line interfaces or scripts |
+| wdl/tools | workflows that combine multiple tasks to produce intermediate/final outputs |
 | wdl/structs   | data types for inputs to tools and workflows |
 
