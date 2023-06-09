@@ -1,0 +1,13 @@
+# Cactus
+
+This Dockerfile requires the cactus repo at git@github.com:ComparativeGenomicsToolkit/cactus.git
+
+## Dockerfile
+
+Version 2.50
+Docker hub: ebelter/cactus:2.5.0-20.04
+
+Peg repo to tagged version, cp Dockerfile and build.
+
+Need to use ubuntu 20.04 focal on MGI 
+
