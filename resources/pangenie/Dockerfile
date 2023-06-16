@@ -1,0 +1,41 @@
+FROM ubuntu:20.04
+
+ENV LC_ALL=C
+ENV TZ=America/Chicago
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && \
+  echo ${TZ} | tee /etc/timezone
+
+RUN DEBIAN_FRONTEND=noninteractive apt update && \
+  apt install -y \
+    build-essential \
+    cmake \
+    git \
+    libjellyfish-2.0-dev \
+    libnss-sss \
+    pkg-config \
+    software-properties-common \
+    vim \
+    zlib1g-dev \
+  && apt clean -y
+
+WORKDIR /metadata/
+RUN dpkg -l | grep jellyfish | tr -s " " | cut -d " " -f 2,3 | tee jellyfish.lib.version
+WORKDIR /apps/
+RUN git clone --depth 1 --branch v2.1.1 https://github.com/eblerjana/pangenie.git 
+WORKDIR pangenie/build/
+RUN cmake .. && \
+      make -j 4
+      #cp src/PanGenie src/PanGenie-graph src/libPanGenieLib.so /apps/pangenie/
+WORKDIR ../
+RUN git rev-parse --short HEAD | tee /metadata/pangenie.git.version
+WORKDIR /
+RUN DEBIAN_FRONTEND=noninteractive apt-get remove -y \
+      build-essential \
+      cmake \
+      git \
+      make \
+      pkg-config \
+      software-properties-common && \
+      apt-get autoremove -y && \
+      apt-get clean -y
+ENV PATH=/apps/pangenie/build/src:${PATH}
