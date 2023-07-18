@@ -1,4 +1,4 @@
-# Wang Workflows
+# Wang Lab @ MGI Workflows
 
 ## Overview
 
