@@ -1,35 +1,36 @@
 #!/bin/bash
+# Create a ribosome interval list for Picard collect RNA metrics
 set -ex
-picard_jar=/usr/picard/picard.jar
-if [ ! -e "${picard_jar}" ]; then
-    echo "Failed to find picard jar at ${picard_jar}" && exit 1
-fi
 
-USAGE="${0} <ALIGNMENTS> <ANNOTATION> <OUTPUT>"
-# ALIGNMENTS  sam/bam file
-# ANNOTATION  gtf gz
-# OUTPUT      intervals file
-if [ -z "${1}" ]; then
-    echo $USAGE && exit 2
+# INPUTS
+USAGE="USAGE ${0} ALIGNMENTS ANNOTATION_GTF_GZ"
+if [[ -z "${1}" ]]; then
+    echo "${USAGE}" && exit 2
 fi
 alignments="${1}"
-if [ -z "${1}" ]; then
-    echo $USAGE && exit 2
+if [[ -z "${2}" ]]; then
+    echo "${USAGE}" && exit 2
 fi
-annotation="${2}"
-if [ -z "${3}" ]; then
-    echo $USAGE && exit 2
-fi
-output="${3}"
+annotation_gtf_gz="${2}"
 
-java -jar "${picard_jar}" ViewSam --INPUT "${alignments}" --ALIGNMENT_STATUS All --PF_STATUS All --HEADER_ONLY 2>/dev/null | grep SQ > "${output}"
-zcat "${annotation}" | \
-    grep 'gene_type "rRNA"' | \
-    awk '$3 == "transcript"' | \
+# OUTPUT
+if [[ -z "${3}" ]]; then
+    ribosomal_il="ribosomal.intervals_list"
+else
+    ribosomal_il="${3}"
+fi
+
+# Add a header line
+echo -e "@HD\tVN:1.4" > ${ribosomal_il}
+# Add the seq dict from alignments
+samtools view -H ${alignments} | grep "@SQ" >> ${ribosomal_il}
+# Grep the rRNA from the annotations, format to inverval list, sort
+zgrep -i rRNA ${annotation_gtf_gz} | \
+#    awk '$3 == "gene"' | \
     cut -f1,4,5,7,9 | \
     perl -lane '
-        /transcript_id "([^"]+)"/ or die "no transcript_id on $.";
+        /gene_id "([^"]+)"/ or die "no gene_id on $.";
         print join "\t", (@F[0,1,2,3], $1)
     ' | \
     sort -k1V -k2n -k3n \
->> "${output}"
+    >> ${ribosomal_il}
