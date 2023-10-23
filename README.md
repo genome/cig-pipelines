@@ -1,9 +1,10 @@
-# Wang Lab @ MGI Workflows
+# CIG Group @ MGI Workflows
+
+The Collaborative and Intergrative Genomics (CIG) is a group in the [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) at the [Washington University School of Medicine](https://medicine.wustl.edu/) (WUSM).
 
 ## Overview
 
-The [Wang Lab](https://wang.wustl.edu/) at [Washington University School of Medicine](https://medicine.wustl.edu/) (WUSM) in partnership with the [McDonnell Genome Institute](https://www.genome.wustl.edu/) (MGI) share pipelines, workflows, and tools in the form of [WDL](https://github.com/openwdl/wdl/blob/main/versions/1.1/SPEC.md) with corresponding Dockerfiles and scripts focused on reusable, reproducible analysis pipelines for genomics data.  
-
+In this repo, we share pipelines, workflows, and tools in the form of [WDL](https://github.com/openwdl/wdl/blob/main/versions/1.1/SPEC.md) with corresponding Dockerfiles and scripts focused on reusable, reproducible analysis pipelines for genomics data.  
 
 ## Repo Structure
 
