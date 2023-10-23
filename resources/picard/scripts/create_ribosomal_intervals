@@ -1,9 +1,9 @@
 #!/bin/bash
 # Create a ribosome interval list for Picard collect RNA metrics
-set -ex
+set -e
 
 # INPUTS
-USAGE="USAGE ${0} ALIGNMENTS ANNOTATION_GTF_GZ"
+USAGE="USAGE ${0} ALIGNMENTS ANNOTATION_GTF_GZ <OUTPUT=ribosomal.intervals_list>"
 if [[ -z "${1}" ]]; then
     echo "${USAGE}" && exit 2
 fi
@@ -26,7 +26,6 @@ echo -e "@HD\tVN:1.4" > ${ribosomal_il}
 samtools view -H ${alignments} | grep "@SQ" >> ${ribosomal_il}
 # Grep the rRNA from the annotations, format to inverval list, sort
 zgrep -i rRNA ${annotation_gtf_gz} | \
-#    awk '$3 == "gene"' | \
     cut -f1,4,5,7,9 | \
     perl -lane '
         /gene_id "([^"]+)"/ or die "no gene_id on $.";
