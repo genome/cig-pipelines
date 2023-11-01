@@ -13,7 +13,8 @@ RUN curl http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred -o 
 COPY /scripts/ ./
 RUN chmod -R a+rwx ./
 
-COPY mgi/ /tmp/mgi/
+WORKDIR /tmp/
+RUN git clone https://github.com/ebelter/mgi.git
 WORKDIR /tmp/mgi/
 RUN ln -s setup.cig-metrics.py setup.py && \
   python3 -m pip install --prefix=/usr/local .
