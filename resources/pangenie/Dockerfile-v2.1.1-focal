@@ -22,12 +22,10 @@ WORKDIR /metadata/
 RUN dpkg -l | grep jellyfish | tr -s " " | cut -d " " -f 2,3 | tee jellyfish.lib.version
 WORKDIR /apps/
 RUN git clone --depth 1 --branch v2.1.1 https://github.com/eblerjana/pangenie.git 
-WORKDIR pangenie/build/
-RUN cmake .. && \
-      make -j 4
-      #cp src/PanGenie src/PanGenie-graph src/libPanGenieLib.so /apps/pangenie/
-WORKDIR ../
+WORKDIR /apps/pangenie/
 RUN git rev-parse --short HEAD | tee /metadata/pangenie.git.version
+WORKDIR /apps/pangenie/build/
+RUN cmake .. && make -j 4
 WORKDIR /
 RUN DEBIAN_FRONTEND=noninteractive apt-get remove -y \
       build-essential \
