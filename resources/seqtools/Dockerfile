@@ -20,13 +20,20 @@ RUN apt update && \
      zlib1g-dev \
   && apt clean
 
-# SAMTOOLS
-ARG samtools_version=1.15.1
-ARG prog=samtools
+# SAMTOOLS & BCFTOOLS & HTSlib
+ARG htslib_version=1.18
 WORKDIR /tmp/build/
-RUN curl -L https://github.com/samtools/${prog}/releases/download/${samtools_version}/${prog}-${samtools_version}.tar.bz2 --output ${prog}.tar.bz2 && \
-   bunzip2 ${prog}.tar.bz2 && tar xf ${prog}.tar && \
-   cd ${prog}-${samtools_version} && \
+RUN curl -L https://github.com/samtools/samtools/releases/download/${htslib_version}/samtools-${htslib_version}.tar.bz2 --output samtools.tar.bz2 && \
+   bunzip2 samtools.tar.bz2 && tar xf samtools.tar && \
+   cd samtools-${htslib_version} && \
+   ./configure --prefix=/usr/local && make && make install
+RUN curl -L https://github.com/samtools/bcftools/releases/download/${htslib_version}/bcftools-${htslib_version}.tar.bz2 --output bcftools.tar.bz2 && \
+   bunzip2 bcftools.tar.bz2 && tar xf bcftools.tar && \
+   cd bcftools-${htslib_version} && \
+   ./configure --prefix=/usr/local && make && make install
+RUN curl -L https://github.com/samtools/htslib/releases/download/${htslib_version}/htslib-${htslib_version}.tar.bz2 --output htslib.tar.bz2 && \
+   bunzip2 htslib.tar.bz2 && tar xf htslib.tar && \
+   cd htslib-${htslib_version} && \
    ./configure --prefix=/usr/local && make && make install
 
 # SEQ-TK
