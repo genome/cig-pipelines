@@ -39,8 +39,9 @@ RUN curl -L https://github.com/samtools/htslib/releases/download/${htslib_versio
 # MINIMAP2
 WORKDIR /tmp/minimap2
 RUN curl -L https://github.com/lh3/minimap2/releases/download/v2.26/minimap2-2.26_x64-linux.tar.bz2 --output minimap.tar.bz2 && \
-  tar -jxvf minimap.tar.bz2 && \
-  cp minimap2-2.26_x64-linux/minimap2 /usr/local/bin/
+  tar -jxvf minimap.tar.bz2
+WORKDIR minimap2-2.26_x64-linux/
+RUN cp k8 minimap2 paftools.js /usr/local/bin/
 
 WORKDIR /
 RUN rm -rf /tmp/build/
