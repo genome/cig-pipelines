@@ -17,7 +17,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 
 # ABRA2
 WORKDIR /apps/abra2
-RUN wget https://github.com/mozack/abra2/releases/download/v2.24/abra2-2.24.jar \
+RUN wget https://github.com/mozack/abra2/releases/download/v2.23/abra2-2.23.jar \
   && find . -name abra2-\*.jar | head -1 | xargs -I% ln % abra2.jar
 
 # CLEAN UP
