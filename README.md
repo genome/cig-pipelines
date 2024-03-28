@@ -10,11 +10,11 @@ In this repo, we share pipelines, workflows, and tools in the form of [WDL](http
 
 | Path | Description |
 | --- | --- |
-| resources     | directories of packages containing dockers and basic scripts |
+| resources     | directories of namespaces containing dockers and scripts |
 | wdl           | workflow definitions written in WDL (cromwell) |
-| wdl/pipelines | start to end process that typically contain tools & tasks to produce final outputs |
-| wdl/tasks     | these wrap command line interfaces or scripts and cannot be run separately |
-| wdl/tools     | workflows that combine multiple tasks to produce intermediate/final outputs |
-| wdl/structs   | data types for inputs to tools and workflows |
-| scripts       | parent directory by containing dockers and basic scripts |
-| imoprt        | assorted unassimilated pipelines, code, etc. |
+| wdl/pipelines | full start to end workflows that produce outputs from multiple steps |
+| wdl/tasks     | wrapped command line interfaces and scripts (must be incorporated into tools/pipelines) |
+| wdl/tools     | stand alone workflows that combine tasks to produce singular outputs |
+| wdl/structs   | data structures and types for pipelines, tools, and tasks |
+| scripts       | scripts for this repository |
+| import        | assorted unassimilated pipelines, code, etc. |
