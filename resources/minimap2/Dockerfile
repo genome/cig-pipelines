@@ -37,12 +37,17 @@ RUN curl -L https://github.com/samtools/htslib/releases/download/${htslib_versio
    ./configure --prefix=/usr/local && make && make install
 
 # MINIMAP2
-WORKDIR /tmp/minimap2
-RUN curl -L https://github.com/lh3/minimap2/releases/download/v2.26/minimap2-2.26_x64-linux.tar.bz2 --output minimap.tar.bz2 && \
-  tar -jxvf minimap.tar.bz2
-WORKDIR minimap2-2.26_x64-linux/
-RUN cp k8 minimap2 paftools.js /usr/local/bin/
+ARG MINIMAP2_VERSION="v2.28"
+WORKDIR /tmp/build/
+RUN git clone --single-branch --branch "${MINIMAP2_VERSION}" https://github.com/lh3/minimap2.git
+WORKDIR minimap2/
+RUN make && \
+  cp minimap2 /usr/local/bin/ && \
+  cp misc/paftools.js /usr/local/bin/paftools
+WORKDIR /tmp/build/
+RUN wget https://github.com/attractivechaos/k8/releases/download/v1.0/k8-1.0.tar.bz2 && \
+  tar -jxf k8-1.0.tar.bz2 && \
+  cp k8-1.0/k8-x86_64-Linux /usr/local/bin/k8
 
 WORKDIR /
 RUN rm -rf /tmp/build/
-RUN rm -rf /tmp/mimnimap2/
