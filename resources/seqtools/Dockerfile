@@ -4,6 +4,7 @@ LABEL maintainer=ebelter@wustl.edu
 
 RUN apt update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
+     bedtools \
      bzip2 \
      curl \
      gcc \
